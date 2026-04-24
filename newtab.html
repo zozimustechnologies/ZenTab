@@ -64,6 +64,26 @@
       </div>
     </section>
 
+    <!-- Favourite Tabs -->
+    <section id="favtabs-section">
+      <div id="favtabs-grid">
+        <!-- Add button lives inside the grid as the last tile -->
+        <div class="topsite-item favtabs-add-tile" id="favtabs-add-btn" title="Add favourite tab">
+          <div class="topsite-favicon favtabs-add-icon">＋</div>
+          <span class="topsite-label">Add</span>
+        </div>
+      </div>
+      <!-- Inline add form -->
+      <div id="favtabs-form" class="favtabs-form hidden">
+        <input id="favtabs-url"  type="text" placeholder="URL, e.g. github.com" autocomplete="off" />
+        <input id="favtabs-name" type="text" placeholder="Name (optional)" autocomplete="off" />
+        <div class="favtabs-form-actions">
+          <button id="favtabs-save-btn"   type="button">Add</button>
+          <button id="favtabs-cancel-btn" type="button">Cancel</button>
+        </div>
+      </div>
+    </section>
+
     <!-- Top Sites -->
     <section id="topsites-section">
       <div id="topsites-grid"></div>
@@ -95,9 +115,11 @@
 
   <!-- Scripts (module order matters) -->
   <script src="js/storage.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/clock.js"></script>
   <script src="js/search.js"></script>
   <script src="js/topsites.js"></script>
+  <script src="js/favtabs.js"></script>
   <script src="js/todo.js"></script>
   <script src="js/weather.js"></script>
   <script src="js/notes.js"></script>

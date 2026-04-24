@@ -35,7 +35,7 @@ html, body {
 #bg-layer {
   position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
+  background-image: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
   background-size: cover;
   background-position: center;
   transition: background-image 0.6s ease;
@@ -259,6 +259,127 @@ html, body {
 
 /* ── Top Sites ────────────────────────────────────────────── */
 #topsites-section { width: 100%; max-width: 580px; }
+
+/* ── Favourite Tabs ───────────────────────────────────────── */
+#favtabs-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  max-width: 580px;
+}
+
+#favtabs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Reuse .topsite-item styles; add remove button */
+.favtab-item { position: relative; }
+
+.favtab-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  border: none;
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 2;
+}
+.favtab-item:hover .favtab-remove { display: flex; }
+
+.favtabs-add-tile {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.favtabs-add-icon {
+  border-style: dashed !important;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition);
+}
+
+.favtabs-add-tile:hover .favtabs-add-icon {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.favtabs-add-tile:hover .topsite-label {
+  color: var(--text);
+}
+
+.favtabs-add {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition);
+  backdrop-filter: blur(8px);
+}
+.favtabs-add:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.favtabs-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(15,12,41,0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  width: 260px;
+  backdrop-filter: blur(12px);
+}
+.favtabs-form input {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  font-size: 0.88rem;
+}
+.favtabs-form input.input-error { border-color: #f87171; }
+.favtabs-form-actions {
+  display: flex;
+  gap: 8px;
+}
+.favtabs-form-actions button {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+#favtabs-save-btn   { background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #1a1a1a; }
+#favtabs-cancel-btn { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
 
 #topsites-grid {
   display: flex;

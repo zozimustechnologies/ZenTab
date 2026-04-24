@@ -57,16 +57,26 @@ const TopSites = (() => {
     });
   }
 
-  async function init() {
+  async function init({ show = true } = {}) {
+    const section = document.getElementById("topsites-section");
+    if (!show) {
+      if (section) section.classList.add("hidden");
+      return;
+    }
+    if (section) section.classList.remove("hidden");
+    const blocked = await Config.blockedHosts();
+    const filter = (sites) => sites.filter((s) => {
+      try { return !blocked.includes(new URL(s.url).hostname.replace(/^www\./, "")); }
+      catch { return true; }
+    });
     if (typeof chrome !== "undefined" && chrome.topSites) {
-      chrome.topSites.get((sites) => render(sites || []));
+      chrome.topSites.get((sites) => render(filter(sites || [])));
     } else {
-      // Dev/non-extension fallback: show placeholder tiles
-      render([
+      render(filter([
         { url: "https://github.com", title: "GitHub" },
         { url: "https://google.com", title: "Google" },
         { url: "https://youtube.com", title: "YouTube" },
-      ]);
+      ]));
     }
   }
 

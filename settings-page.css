@@ -17,17 +17,20 @@
   --transition:    0.2s ease;
 }
 
+html {
+  height: 100%;
+  background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
+  background-attachment: fixed;
+  background-color: #0f0c29;
+}
+
 html, body {
-  min-height: 100vh;
+  min-height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
   background-attachment: fixed;
   color: var(--text);
   overscroll-behavior: none;
-}
-
-html {
-  background-color: #0f0c29;
 }
 
 /* ── Page container ───────────────────────────────────────── */
@@ -204,7 +207,31 @@ textarea {
 
 .sp-row label { font-size: 0.9rem; }
 
+.sp-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-color-row input[type="color"] {
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.sp-hex-input {
+  width: 90px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
 .sp-select-inline { width: auto; }
+
+.sp-inline-input { width: 160px; }
 
 /* ── Toggle (checkbox + label) ────────────────────────────── */
 .sp-toggle {
@@ -246,6 +273,23 @@ textarea {
 }
 
 #sp-save-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.sp-discard-btn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+.sp-discard-btn:hover {
+  border-color: rgba(255,255,255,0.4);
+  color: var(--text);
+}
 #sp-save-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
 
 .sp-back {

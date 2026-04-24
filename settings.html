@@ -26,9 +26,37 @@
         <h2 class="sp-section-title">Background</h2>
         <select id="sp-bg-type">
           <option value="gradient">Gradient (Default)</option>
+          <option value="solid">Solid Color</option>
           <option value="unsplash">Random Nature Photo</option>
           <option value="custom">Custom Image URL</option>
         </select>
+        <!-- Gradient hex pickers -->
+        <div id="sp-gradient-group" class="hidden mt">
+          <div class="sp-row">
+            <label for="sp-grad-from">From</label>
+            <div class="sp-color-row">
+              <input type="color" id="sp-grad-from" value="#0f0c29" />
+              <input type="text"  id="sp-grad-from-hex" class="sp-hex-input" maxlength="7" placeholder="#0f0c29" />
+            </div>
+          </div>
+          <div class="sp-row mt">
+            <label for="sp-grad-to">To</label>
+            <div class="sp-color-row">
+              <input type="color" id="sp-grad-to" value="#24243e" />
+              <input type="text"  id="sp-grad-to-hex" class="sp-hex-input" maxlength="7" placeholder="#24243e" />
+            </div>
+          </div>
+        </div>
+        <!-- Solid color picker -->
+        <div id="sp-solid-group" class="hidden mt">
+          <div class="sp-row">
+            <label for="sp-solid-color">Color</label>
+            <div class="sp-color-row">
+              <input type="color" id="sp-solid-color" value="#1a1a4e" />
+              <input type="text"  id="sp-solid-hex" class="sp-hex-input" maxlength="7" placeholder="#1a1a4e" />
+            </div>
+          </div>
+        </div>
         <input id="sp-bg-url" type="text" placeholder="https://example.com/image.jpg" class="hidden mt" />
       </section>
 
@@ -41,6 +69,36 @@
         </label>
         <div id="sp-city-group" class="hidden mt">
           <input id="sp-weather-city" type="text" placeholder="Enter your city, e.g. London" />
+        </div>
+      </section>
+
+      <!-- ── Recent Sites ───────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Recent Sites</h2>
+        <label class="sp-toggle">
+          <input type="checkbox" id="sp-show-topsites" />
+          <span>Show recently visited sites on new tab</span>
+        </label>
+      </section>
+
+      <!-- ── Display Name ───────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Display Name</h2>
+        <div class="sp-row mt">
+          <label for="sp-first-name">First name</label>
+          <input type="text" id="sp-first-name" class="sp-inline-input" placeholder="e.g. Jane" autocomplete="given-name" maxlength="40" />
+        </div>
+        <div class="sp-row mt">
+          <label for="sp-last-name">Last name</label>
+          <input type="text" id="sp-last-name" class="sp-inline-input" placeholder="e.g. Smith" autocomplete="family-name" maxlength="40" />
+        </div>
+        <div class="sp-row mt">
+          <label for="sp-greeting-style">Greeting style</label>
+          <select id="sp-greeting-style" class="sp-select-inline">
+            <option value="formal">Formal</option>
+            <option value="semiformal" selected>Semi-formal</option>
+            <option value="informal">Informal</option>
+          </select>
         </div>
       </section>
 
@@ -85,6 +143,7 @@
       <!-- ── Actions ───────────────────────────────────────── -->
       <div class="sp-actions">
         <button type="submit" id="sp-save-btn">Save Changes</button>
+        <button type="button" id="sp-discard-btn" class="sp-discard-btn">Discard Changes</button>
         <a id="sp-back-link" href="#" class="sp-back">← Open New Tab</a>
       </div>
 

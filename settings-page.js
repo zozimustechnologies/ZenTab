@@ -20,8 +20,15 @@
   const DEFAULTS = {
     bgType:       "gradient",
     bgUrl:        "",
+    bgGradFrom:   "#0f0c29",
+    bgGradTo:     "#24243e",
+    bgSolid:      "#1a1a4e",
+    firstName:    "",
+    lastName:     "",
+    greetingStyle: "semiformal",
     showWeather:  false,
     weatherCity:  "",
+    showTopSites: true,
     clockFormat:  "12",
     showSeconds:  false,
     useSync:      false,
@@ -34,26 +41,66 @@
   );
 
   /* ── Populate form ──────────────────────────────────────── */
-  const bgType    = document.getElementById("sp-bg-type");
-  const bgUrl     = document.getElementById("sp-bg-url");
-  const showWx    = document.getElementById("sp-show-weather");
-  const cityGroup = document.getElementById("sp-city-group");
-  const cityInput = document.getElementById("sp-weather-city");
+  const bgType       = document.getElementById("sp-bg-type");
+  const bgUrl        = document.getElementById("sp-bg-url");
+  const gradGroup    = document.getElementById("sp-gradient-group");
+  const gradFrom     = document.getElementById("sp-grad-from");
+  const gradFromHex  = document.getElementById("sp-grad-from-hex");
+  const gradTo       = document.getElementById("sp-grad-to");
+  const gradToHex    = document.getElementById("sp-grad-to-hex");
+  const solidGroup   = document.getElementById("sp-solid-group");
+  const solidColor   = document.getElementById("sp-solid-color");
+  const solidHex     = document.getElementById("sp-solid-hex");
+  const showWx      = document.getElementById("sp-show-weather");
+  const cityGroup   = document.getElementById("sp-city-group");
+  const cityInput   = document.getElementById("sp-weather-city");
+  const showTopSitesChk = document.getElementById("sp-show-topsites");
   const clockFmt  = document.getElementById("sp-clock-format");
   const showSecs  = document.getElementById("sp-show-seconds");
   const useSync   = document.getElementById("sp-use-sync");
+  const firstName = document.getElementById("sp-first-name");
+  const lastName  = document.getElementById("sp-last-name");
+  const greetingStyle = document.getElementById("sp-greeting-style");
 
-  bgType.value   = s.bgType;
-  bgUrl.value    = s.bgUrl;
-  bgUrl.classList.toggle("hidden", s.bgType !== "custom");
+  function syncBgVisibility() {
+    const t = bgType.value;
+    gradGroup.classList.toggle("hidden", t !== "gradient");
+    solidGroup.classList.toggle("hidden", t !== "solid");
+    bgUrl.classList.toggle("hidden", t !== "custom");
+  }
 
-  showWx.checked = s.showWeather;
+  // Sync color picker <-> hex text field
+  function bindColorHex(picker, hex) {
+    picker.addEventListener("input", () => { hex.value = picker.value; });
+    hex.addEventListener("input", () => {
+      if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) picker.value = hex.value;
+    });
+  }
+  bindColorHex(gradFrom,   gradFromHex);
+  bindColorHex(gradTo,     gradToHex);
+  bindColorHex(solidColor, solidHex);
+
+  bgType.value      = s.bgType;
+  bgUrl.value       = s.bgUrl;
+  gradFrom.value    = s.bgGradFrom;
+  gradFromHex.value = s.bgGradFrom;
+  gradTo.value      = s.bgGradTo;
+  gradToHex.value   = s.bgGradTo;
+  solidColor.value  = s.bgSolid;
+  solidHex.value    = s.bgSolid;
+  syncBgVisibility();
+
+  showWx.checked           = s.showWeather;
   cityGroup.classList.toggle("hidden", !s.showWeather);
-  cityInput.value = s.weatherCity;
+  cityInput.value           = s.weatherCity;
+  showTopSitesChk.checked   = s.showTopSites !== false;
 
   clockFmt.value   = s.clockFormat;
   showSecs.checked = s.showSeconds;
   useSync.checked  = s.useSync;
+  firstName.value       = s.firstName;
+  lastName.value        = s.lastName;
+  greetingStyle.value   = s.greetingStyle ?? "semiformal";
 
   /* ── Live clock format preview ─────────────────────────── */
   const opt12 = document.getElementById("sp-clock-opt-12");
@@ -84,11 +131,18 @@
     return (
       bgType.value          !== s.bgType        ||
       bgUrl.value.trim()    !== s.bgUrl         ||
+      gradFrom.value        !== s.bgGradFrom    ||
+      gradTo.value          !== s.bgGradTo      ||
+      solidColor.value      !== s.bgSolid       ||
       showWx.checked        !== s.showWeather   ||
       cityInput.value.trim()!== s.weatherCity   ||
+      showTopSitesChk.checked !== (s.showTopSites !== false) ||
       clockFmt.value        !== s.clockFormat   ||
       showSecs.checked      !== s.showSeconds   ||
-      useSync.checked       !== s.useSync
+      useSync.checked       !== s.useSync       ||
+      firstName.value.trim()!== s.firstName     ||
+      lastName.value.trim() !== s.lastName      ||
+      greetingStyle.value   !== (s.greetingStyle ?? "semiformal")
     );
   }
 
@@ -121,9 +175,7 @@
   });
 
   /* ── Dynamic visibility ─────────────────────────────────── */
-  bgType.addEventListener("change", () => {
-    bgUrl.classList.toggle("hidden", bgType.value !== "custom");
-  });
+  bgType.addEventListener("change", syncBgVisibility);
 
   showWx.addEventListener("change", () => {
     cityGroup.classList.toggle("hidden", !showWx.checked);
@@ -133,20 +185,47 @@
   const SITE_BLOCKER_ID = "lkcklabdlogcdcmbddiffonafahgagmm";
   const sbBtn = document.getElementById("sp-siteblocker-btn");
 
-  if (typeof chrome !== "undefined" && chrome.management && sbBtn) {
-    chrome.management.get(SITE_BLOCKER_ID, (extInfo) => {
-      if (chrome.runtime.lastError || !extInfo || !extInfo.enabled) return;
-      // Site Blocker is installed and enabled — update the button
-      sbBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1em;vertical-align:middle;margin-right:4px">open_in_browser</span>Open Site Blocker';
-      sbBtn.removeAttribute("href");
-      sbBtn.removeAttribute("target");
-      sbBtn.removeAttribute("rel");
-      sbBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        chrome.tabs.create({ url: `chrome-extension://${SITE_BLOCKER_ID}/sidepanel.html` });
+  if (typeof chrome !== "undefined" && sbBtn) {
+    try {
+      chrome.management.get(SITE_BLOCKER_ID, (extInfo) => {
+        if (chrome.runtime.lastError || !extInfo || !extInfo.enabled) return;
+        // Site Blocker is installed and enabled — update the button
+        sbBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1em;vertical-align:middle;margin-right:4px">open_in_browser</span>Open Site Blocker';
+        sbBtn.removeAttribute("href");
+        sbBtn.removeAttribute("target");
+        sbBtn.removeAttribute("rel");
+        sbBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          chrome.tabs.create({ url: `chrome-extension://${SITE_BLOCKER_ID}/sidepanel.html` });
+        });
       });
-    });
+    } catch (_) { /* management API not available in this context */ }
   }
+
+  /* ── Discard changes ────────────────────────────────────── */
+  document.getElementById("sp-discard-btn").addEventListener("click", () => {
+    bgType.value          = s.bgType;
+    bgUrl.value           = s.bgUrl;
+    gradFrom.value        = s.bgGradFrom;
+    gradFromHex.value     = s.bgGradFrom;
+    gradTo.value          = s.bgGradTo;
+    gradToHex.value       = s.bgGradTo;
+    solidColor.value      = s.bgSolid;
+    solidHex.value        = s.bgSolid;
+    syncBgVisibility();
+    showWx.checked        = s.showWeather;
+    cityGroup.classList.toggle("hidden", !s.showWeather);
+    cityInput.value       = s.weatherCity;
+    showTopSitesChk.checked = s.showTopSites !== false;
+    firstName.value       = s.firstName;
+    lastName.value        = s.lastName;
+    greetingStyle.value   = s.greetingStyle ?? "semiformal";
+    clockFmt.value        = s.clockFormat;
+    showSecs.checked      = s.showSeconds;
+    useSync.checked       = s.useSync;
+    updateClockOptions();
+    hideToast();
+  });
 
   /* ── Back / open new tab link ───────────────────────────── */
   document.getElementById("sp-back-link").addEventListener("click", (e) => {
@@ -179,11 +258,22 @@
       }
     }
 
+    const gradFromVal = gradFrom.value;
+    const gradToVal   = gradTo.value;
+    const solidVal    = solidColor.value;
+
     const toSave = {
       bgType:       bgTypeVal,
       bgUrl:        bgUrlVal,
+      bgGradFrom:   gradFromVal,
+      bgGradTo:     gradToVal,
+      bgSolid:      solidVal,
+      firstName:    firstName.value.trim(),
+      lastName:     lastName.value.trim(),
+      greetingStyle: greetingStyle.value,
       showWeather:  showWx.checked,
       weatherCity:  cityInput.value.trim(),
+      showTopSites: showTopSitesChk.checked,
       clockFormat:  clockFmt.value,
       showSeconds:  showSecs.checked,
       useSync:      useSync.checked,

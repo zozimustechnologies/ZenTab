@@ -4,11 +4,12 @@
 
 (async () => {
   // Settings init drives clock + search init (passes saved preferences)
-  await Settings.init();
+  const s = await Settings.init();
 
   // Independent modules
   await Promise.all([
-    TopSites.init(),
+    TopSites.init({ show: s.showTopSites !== false }),
+    FavTabs.init(),
     Todo.init(),
     Notes.init(),
     Weather.init(),

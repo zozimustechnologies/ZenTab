@@ -7,6 +7,13 @@ const Settings = (() => {
   const DEFAULTS = {
     bgType:       "gradient",
     bgUrl:        "",
+    bgGradFrom:   "#0f0c29",
+    bgGradTo:     "#24243e",
+    bgSolid:      "#1a1a4e",
+    firstName:    "",
+    lastName:     "",
+    greetingStyle: "semiformal",
+    showTopSites: true,
     clockFormat:  "12",
     showSeconds:  false,
   };
@@ -35,8 +42,11 @@ const Settings = (() => {
     "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=1920&h=1080&fit=crop",
   ];
 
-  function applyBackground(type, url) {
+  function applyBackground(type, url, gradFrom, gradTo, solid) {
     const bg = document.getElementById("bg-layer");
+    // Reset only the sub-properties we control, never the shorthand
+    bg.style.backgroundImage = "";
+    bg.style.backgroundColor = "";
     if (type === "unsplash") {
       const pick = NATURE_PHOTOS[Math.floor(Math.random() * NATURE_PHOTOS.length)];
       bg.style.backgroundImage = `url(${JSON.stringify(pick)})`;
@@ -47,8 +57,15 @@ const Settings = (() => {
           bg.style.backgroundImage = `url(${JSON.stringify(url)})`;
         }
       } catch { /* invalid URL — keep gradient */ }
+    } else if (type === "solid" && solid) {
+      bg.style.backgroundImage = "none";
+      bg.style.backgroundColor = solid;
     } else {
-      bg.style.backgroundImage = "";
+      // "gradient" (default) — apply inline so custom colors take effect
+      const from = /^#[0-9a-fA-F]{6}$/.test(gradFrom) ? gradFrom : "#0f0c29";
+      const to   = /^#[0-9a-fA-F]{6}$/.test(gradTo)   ? gradTo   : "#24243e";
+      // Blend a midpoint stop to match the original 3-stop gradient look
+      bg.style.backgroundImage = `linear-gradient(135deg, ${from} 0%, #1a1a4e 50%, ${to} 100%)`;
     }
   }
 
@@ -58,8 +75,9 @@ const Settings = (() => {
       Object.keys(DEFAULTS).map((k) => [k, data[k] ?? DEFAULTS[k]])
     );
 
-    applyBackground(s.bgType, s.bgUrl);
-    Clock.init({ use24: s.clockFormat === "24", seconds: s.showSeconds });
+    applyBackground(s.bgType, s.bgUrl, s.bgGradFrom, s.bgGradTo, s.bgSolid);
+    const displayName = [s.firstName, s.lastName].filter(Boolean).join(" ");
+    Clock.init({ use24: s.clockFormat === "24", seconds: s.showSeconds, name: displayName, greetingStyle: s.greetingStyle });
     Search.init("bing");
 
     // Settings button opens settings.html in a new tab

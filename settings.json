@@ -1,0 +1,30 @@
+{
+  "_readme": "Zen Tab developer config. Edit this file to customise extension behaviour. Reload the extension after saving.",
+
+  "topSites": {
+    "blockedHosts": [
+      "office.com"
+    ]
+  },
+
+  "greetings": {
+    "formal": {
+      "night":     ["Good night", "Wishing you a restful evening", "Sleep well", "Have a peaceful night", "Rest well tonight"],
+      "morning":   ["Good morning", "Good morning, I hope you are well", "Wishing you a good morning", "Hope your morning is well", "Good morning to you"],
+      "afternoon": ["Good afternoon", "I hope your afternoon is productive", "Hope your afternoon is well", "Wishing you a good afternoon", "Good afternoon to you"],
+      "evening":   ["Good evening", "I hope you have had a pleasant day", "Hope you had a good day", "Wishing you a pleasant evening", "Good evening to you"]
+    },
+    "semiformal": {
+      "night":     ["Good night", "Rest well", "Sweet dreams", "Sleep well", "Have a good night"],
+      "morning":   ["Good morning", "Rise and shine", "Morning", "Nice to meet you", "Hope you slept well", "Ready for today", "Let's start fresh"],
+      "afternoon": ["Good afternoon", "Hope your day is going well", "How's your day?", "Hope things are good", "Keep it going"],
+      "evening":   ["Good evening", "Time to wind down", "Hope you had a great day", "Relax and unwind", "Easy evening ahead"]
+    },
+    "informal": {
+      "night":     ["Night", "Sleep tight", "Later", "Get some rest", "Lights out", "Crash well"],
+      "morning":   ["Hey", "Morning", "Yo", "What's up", "Heya", "Up already", "Rise n grind"],
+      "afternoon": ["Hey there", "How's it going", "Afternoon", "What's good", "All good", "Still going"],
+      "evening":   ["Evening", "Hey", "How was your day", "Plans tonight", "Chilling", "What's up tonight"]
+    }
+  }
+}
