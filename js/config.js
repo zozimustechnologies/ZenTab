@@ -45,5 +45,17 @@ const Config = (() => {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  return { get, blockedHosts, greetingFor };
+  /** Returns the shortcuts map { flag: url } or {}. */
+  async function shortcuts() {
+    const cfg = await get();
+    const raw = cfg?.shortcuts ?? {};
+    // Strip the _readme meta key
+    const result = {};
+    for (const [k, v] of Object.entries(raw)) {
+      if (k !== "_readme" && typeof v === "string") result[k] = v;
+    }
+    return result;
+  }
+
+  return { get, blockedHosts, greetingFor, shortcuts };
 })();

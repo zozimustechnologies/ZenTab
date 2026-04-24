@@ -148,7 +148,12 @@
 
   function checkDirty() {
     if (isOnboarding) return;
-    if (isFormDirty()) {
+    const dirty = isFormDirty();
+    document.getElementById("sp-save-wrap").classList.toggle("sp-inactive", !dirty);
+    document.getElementById("sp-discard-wrap").classList.toggle("sp-inactive", !dirty);
+    document.getElementById("sp-save-btn").disabled = !dirty;
+    document.getElementById("sp-discard-btn").disabled = !dirty;
+    if (dirty) {
       if (!toast.classList.contains("show")) {
         toast.classList.remove("hidden");
         toast.offsetHeight; // eslint-disable-line no-unused-expressions
@@ -202,8 +207,178 @@
     } catch (_) { /* management API not available in this context */ }
   }
 
+  /* ── Search Shortcuts ───────────────────────────────────── */
+  const shortcutsList  = document.getElementById("sp-shortcuts-list");
+  const shortcutFlag   = document.getElementById("sp-shortcut-flag");
+  const shortcutUrl    = document.getElementById("sp-shortcut-url");
+  const shortcutAddBtn = document.getElementById("sp-shortcut-add-btn");
+  const shortcutError  = document.getElementById("sp-shortcut-error");
+
+  let shortcuts = {}; // { flag: url }
+
+  function renderShortcuts() {
+    shortcutsList.innerHTML = "";
+    const entries = Object.entries(shortcuts);
+    if (!entries.length) {
+      const empty = document.createElement("p");
+      empty.className = "sp-hint";
+      empty.textContent = "No shortcuts yet. Add one below.";
+      shortcutsList.appendChild(empty);
+      return;
+    }
+    entries.forEach(([flag, url]) => {
+      const row = document.createElement("div");
+      row.className = "sp-shortcut-row";
+      const f = document.createElement("span");
+      f.className = "sp-shortcut-flag";
+      f.textContent = flag;
+      const d = document.createElement("span");
+      d.className = "sp-shortcut-dest";
+      d.textContent = url;
+      d.title = url;
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "sp-shortcut-del";
+      del.textContent = "✕";
+      del.title = "Remove";
+      del.addEventListener("click", async () => {
+        delete shortcuts[flag];
+        await Storage.setLocal({ shortcuts });
+        renderShortcuts();
+      });
+      row.appendChild(f);
+      row.appendChild(d);
+      row.appendChild(del);
+      shortcutsList.appendChild(row);
+    });
+  }
+
+  function showShortcutError(msg) {
+    shortcutError.textContent = msg;
+    shortcutError.classList.remove("hidden");
+  }
+  function clearShortcutError() {
+    shortcutError.classList.add("hidden");
+  }
+
+  shortcutFlag.addEventListener("input", clearShortcutError);
+  shortcutUrl.addEventListener("input", clearShortcutError);
+
+  shortcutAddBtn.addEventListener("click", async () => {
+    const flag = shortcutFlag.value.trim().toLowerCase().replace(/^\/+/, "").replace(/\s+/g, "");
+    const url  = shortcutUrl.value.trim();
+
+    if (!flag) {
+      shortcutFlag.classList.add("input-error");
+      showShortcutError("Please enter a flag, e.g. gh");
+      shortcutFlag.focus();
+      return;
+    }
+    if (!url) {
+      shortcutUrl.classList.add("input-error");
+      showShortcutError("Please enter a URL.");
+      shortcutUrl.focus();
+      return;
+    }
+    const fullUrl = /^https?:\/\//i.test(url) ? url : "https://" + url;
+    // Validate URL (allow {q} placeholder)
+    try { new URL(fullUrl.replace("{q}", "test")); } catch {
+      shortcutUrl.classList.add("input-error");
+      showShortcutError("Please enter a valid URL.");
+      shortcutUrl.focus();
+      return;
+    }
+    shortcutFlag.classList.remove("input-error");
+    shortcutUrl.classList.remove("input-error");
+    clearShortcutError();
+
+    shortcuts[flag] = fullUrl;
+    await Storage.setLocal({ shortcuts });
+    renderShortcuts();
+    shortcutFlag.value = "";
+    shortcutUrl.value  = "";
+    shortcutFlag.focus();
+  });
+
+  // Load saved shortcuts
+  const scData = await Storage.getLocal(["shortcuts"]);
+  shortcuts = (scData.shortcuts && typeof scData.shortcuts === "object") ? scData.shortcuts : {};
+  renderShortcuts();
+
+  /* ── Blocked (hidden) sites ─────────────────────────────── */
+  const blockedList     = document.getElementById("sp-blocked-sites-list");
+  const blockedInput    = document.getElementById("sp-blocked-site-input");
+  const blockedAddBtn   = document.getElementById("sp-blocked-site-add-btn");
+  const blockedError    = document.getElementById("sp-blocked-site-error");
+
+  let blockedSites = []; // array of hostname strings
+
+  function renderBlockedSites() {
+    blockedList.innerHTML = "";
+    if (!blockedSites.length) {
+      const empty = document.createElement("p");
+      empty.className = "sp-hint";
+      empty.textContent = "No sites hidden yet.";
+      blockedList.appendChild(empty);
+      return;
+    }
+    blockedSites.forEach((host) => {
+      const row = document.createElement("div");
+      row.className = "sp-shortcut-row";
+      const f = document.createElement("span");
+      f.className = "sp-shortcut-flag";
+      f.style.cssText = "font-family:inherit;font-weight:400;min-width:unset;";
+      f.textContent = host;
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "sp-shortcut-del";
+      del.textContent = "✕";
+      del.title = "Unhide";
+      del.addEventListener("click", async () => {
+        blockedSites = blockedSites.filter((h) => h !== host);
+        await Storage.setLocal({ blockedSites });
+        renderBlockedSites();
+      });
+      row.appendChild(f);
+      row.appendChild(del);
+      blockedList.appendChild(row);
+    });
+  }
+
+  blockedInput.addEventListener("input", () => {
+    blockedInput.classList.remove("input-error");
+    blockedError.classList.add("hidden");
+  });
+
+  blockedAddBtn.addEventListener("click", async () => {
+    let host = blockedInput.value.trim().toLowerCase().replace(/^https?:\/\//i, "").replace(/\/.*$/, "").replace(/^www\./, "");
+    if (!host) {
+      blockedInput.classList.add("input-error");
+      blockedError.textContent = "Please enter a hostname, e.g. reddit.com";
+      blockedError.classList.remove("hidden");
+      blockedInput.focus();
+      return;
+    }
+    if (blockedSites.includes(host)) {
+      blockedInput.classList.add("input-error");
+      blockedError.textContent = `${host} is already hidden.`;
+      blockedError.classList.remove("hidden");
+      return;
+    }
+    blockedSites.push(host);
+    await Storage.setLocal({ blockedSites });
+    renderBlockedSites();
+    blockedInput.value = "";
+    blockedInput.focus();
+  });
+
+  const bsData = await Storage.getLocal(["blockedSites"]);
+  blockedSites = Array.isArray(bsData.blockedSites) ? bsData.blockedSites : [];
+  renderBlockedSites();
+
   /* ── Discard changes ────────────────────────────────────── */
   document.getElementById("sp-discard-btn").addEventListener("click", () => {
+    if (!isFormDirty()) return;
     bgType.value          = s.bgType;
     bgUrl.value           = s.bgUrl;
     gradFrom.value        = s.bgGradFrom;
@@ -281,10 +456,14 @@
 
     await Storage.set(toSave);
 
+    // Sync saved baseline so dirty-check works correctly after save
+    Object.assign(s, toSave);
+
     // Keep localStorage useSync flag in sync so storage.js can read it
     localStorage.setItem("useSync", useSync.checked ? "true" : "false");
 
     hideToast();
+    checkDirty();
 
     if (isOnboarding) {
       const url =

@@ -79,6 +79,16 @@
           <input type="checkbox" id="sp-show-topsites" />
           <span>Show recently visited sites on new tab</span>
         </label>
+        <div class="sp-subsection mt">
+          <h3 class="sp-subsection-title">Hidden sites</h3>
+          <p class="sp-hint">These hostnames will not appear in your recent sites.</p>
+          <div id="sp-blocked-sites-list" class="sp-shortcuts-list mt"></div>
+          <div class="sp-shortcuts-form mt">
+            <input type="text" id="sp-blocked-site-input" class="sp-shortcut-field" placeholder="e.g. reddit.com" autocomplete="off" />
+            <button type="button" id="sp-blocked-site-add-btn" class="sp-shortcut-add-btn">Hide</button>
+          </div>
+          <span id="sp-blocked-site-error" class="sp-shortcut-error hidden"></span>
+        </div>
       </section>
 
       <!-- ── Display Name ───────────────────────────────────── -->
@@ -117,7 +127,18 @@
           <span>Show seconds</span>
         </label>
       </section>
-
+      <!-- ── Shortcuts ───────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Search Shortcuts</h2>
+        <p class="sp-hint">Type <code>/flag</code> in the search bar to jump straight to a URL. Add <code>{q}</code> in the URL to pass a search query.</p>
+        <div id="sp-shortcuts-list" class="sp-shortcuts-list mt"></div>
+        <div id="sp-shortcuts-form" class="sp-shortcuts-form mt">
+          <input type="text" id="sp-shortcut-flag"  class="sp-shortcut-field" placeholder="flag, e.g. gh" autocomplete="off" maxlength="32" />
+          <input type="text" id="sp-shortcut-url"   class="sp-shortcut-field" placeholder="URL, e.g. https://github.com" autocomplete="off" />
+          <button type="button" id="sp-shortcut-add-btn" class="sp-shortcut-add-btn">Add</button>
+        </div>
+        <span id="sp-shortcut-error" class="sp-shortcut-error hidden"></span>
+      </section>
       <!-- ── Focus Mode ────────────────────────────────────── -->
       <section class="sp-section">
         <h2 class="sp-section-title">Block Sites</h2>
@@ -142,12 +163,32 @@
 
       <!-- ── Actions ───────────────────────────────────────── -->
       <div class="sp-actions">
-        <button type="submit" id="sp-save-btn">Save Changes</button>
-        <button type="button" id="sp-discard-btn" class="sp-discard-btn">Discard Changes</button>
+        <div class="sp-btn-wrap sp-inactive" id="sp-save-wrap">
+          <button type="submit" id="sp-save-btn">Save Changes</button>
+          <span class="sp-nodirty-tip">Change a setting first, then try again</span>
+        </div>
+        <div class="sp-btn-wrap sp-inactive" id="sp-discard-wrap">
+          <button type="button" id="sp-discard-btn" class="sp-discard-btn">Discard Changes</button>
+          <span class="sp-nodirty-tip">Change a setting first, then try again</span>
+        </div>
         <a id="sp-back-link" href="#" class="sp-back">← Open New Tab</a>
       </div>
 
     </form>
+
+    <!-- ── Footer ─────────────────────────────────────────── -->
+    <footer id="sp-footer">
+      <a
+        id="sp-donate-btn"
+        href="https://wise.com/pay/business/sandeepchadda?utm_source=open_link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >❤ Donate</a>
+      <p id="sp-copyright">
+        &copy; <a href="https://zozimustechnologies.github.io/" target="_blank" rel="noopener noreferrer">Zozimus Technologies</a>. All rights reserved.
+      </p>
+    </footer>
+
   </div>
 
   <script src="js/storage.js"></script>

@@ -78,7 +78,7 @@ const Settings = (() => {
     applyBackground(s.bgType, s.bgUrl, s.bgGradFrom, s.bgGradTo, s.bgSolid);
     const displayName = [s.firstName, s.lastName].filter(Boolean).join(" ");
     Clock.init({ use24: s.clockFormat === "24", seconds: s.showSeconds, name: displayName, greetingStyle: s.greetingStyle });
-    Search.init("bing");
+    Search.init();
 
     // Settings button opens settings.html in a new tab
     const btn = document.getElementById("settings-btn");

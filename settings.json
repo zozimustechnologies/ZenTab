@@ -3,8 +3,12 @@
 
   "topSites": {
     "blockedHosts": [
-      "office.com"
+      "google.com"
     ]
+  },
+
+  "shortcuts": {
+    "_readme": "Type /flag in the search bar to jump to the mapped URL. Use {q} for optional query passthrough."
   },
 
   "greetings": {

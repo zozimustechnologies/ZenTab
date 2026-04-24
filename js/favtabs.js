@@ -5,15 +5,28 @@
 
 const FavTabs = (() => {
   const STORAGE_KEY = "favTabs";
-  const MAX = 18;
+  const MAX = 6;
 
-  const grid    = document.getElementById("favtabs-grid");
-  const addBtn  = document.getElementById("favtabs-add-btn");
-  const form    = document.getElementById("favtabs-form");
-  const urlIn   = document.getElementById("favtabs-url");
-  const nameIn  = document.getElementById("favtabs-name");
-  const saveBtn = document.getElementById("favtabs-save-btn");
+  const grid      = document.getElementById("favtabs-grid");
+  const addBtn    = document.getElementById("favtabs-add-btn");
+  const form      = document.getElementById("favtabs-form");
+  const urlIn     = document.getElementById("favtabs-url");
+  const urlError  = document.getElementById("favtabs-url-error");
+  const nameIn    = document.getElementById("favtabs-name");
+  const saveBtn   = document.getElementById("favtabs-save-btn");
   const cancelBtn = document.getElementById("favtabs-cancel-btn");
+
+  function showUrlError(msg) {
+    urlIn.classList.add("input-error");
+    urlError.textContent = msg;
+    urlError.classList.remove("hidden");
+    urlIn.focus();
+  }
+
+  function clearUrlError() {
+    urlIn.classList.remove("input-error");
+    urlError.classList.add("hidden");
+  }
 
   let tabs = [];
 
@@ -94,6 +107,7 @@ const FavTabs = (() => {
 
   function hideForm() {
     form.classList.add("hidden");
+    clearUrlError();
   }
 
   async function save() {
@@ -108,19 +122,23 @@ const FavTabs = (() => {
     addBtn.addEventListener("click", showForm);
     cancelBtn.addEventListener("click", hideForm);
 
+    urlIn.addEventListener("input", clearUrlError);
+
     saveBtn.addEventListener("click", async () => {
       let url = urlIn.value.trim();
-      if (!url) return;
+      if (!url) {
+        showUrlError("Please enter a URL.");
+        return;
+      }
 
       // Auto-prepend https:// if missing
       if (!/^https?:\/\//i.test(url)) url = "https://" + url;
 
       try { new URL(url); } catch {
-        urlIn.classList.add("input-error");
-        urlIn.focus();
+        showUrlError("Please enter a valid URL, e.g. github.com");
         return;
       }
-      urlIn.classList.remove("input-error");
+      clearUrlError();
 
       const title = nameIn.value.trim() || hostname(url);
       tabs.push({ url, title });

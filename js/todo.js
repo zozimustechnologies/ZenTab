@@ -5,7 +5,19 @@
 const Todo = (() => {
   const form    = document.getElementById("todo-form");
   const input   = document.getElementById("todo-input");
+  const inputError = document.getElementById("todo-input-error");
   const listEl  = document.getElementById("todo-list");
+
+  function showError(msg) {
+    input.classList.add("input-error");
+    inputError.textContent = msg;
+    inputError.classList.remove("hidden");
+  }
+
+  function clearError() {
+    input.classList.remove("input-error");
+    inputError.classList.add("hidden");
+  }
 
   let tasks = [];
 
@@ -56,13 +68,19 @@ const Todo = (() => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const text = input.value.trim();
-      if (!text) return;
+      if (!text) {
+        showError("Please enter a task.");
+        return;
+      }
+      clearError();
       tasks.push({ text, done: false });
       input.value = "";
       save();
       render();
       listEl.scrollTop = listEl.scrollHeight;
     });
+
+    input.addEventListener("input", clearError);
   }
 
   return { init };

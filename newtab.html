@@ -46,7 +46,6 @@
     <section id="search-section">
       <form id="search-form">
         <div id="search-wrapper">
-          <span id="search-engine-icon" title="Change engine">🔍</span>
           <input
             id="search-input"
             type="text"
@@ -57,11 +56,7 @@
           <button type="submit" id="search-submit" aria-label="Search">→</button>
         </div>
       </form>
-      <!-- Engine picker (shown on icon click) -->
-      <div id="engine-picker" class="hidden">
-        <button data-engine="bing">Bing ⭐</button>
-        <button data-engine="google">Google</button>
-      </div>
+      <div id="search-shortcut-hints" class="hidden"></div>
     </section>
 
     <!-- Favourite Tabs -->
@@ -76,6 +71,7 @@
       <!-- Inline add form -->
       <div id="favtabs-form" class="favtabs-form hidden">
         <input id="favtabs-url"  type="text" placeholder="URL, e.g. github.com" autocomplete="off" />
+        <span id="favtabs-url-error" class="favtabs-url-error hidden"></span>
         <input id="favtabs-name" type="text" placeholder="Name (optional)" autocomplete="off" />
         <div class="favtabs-form-actions">
           <button id="favtabs-save-btn"   type="button">Add</button>
@@ -92,13 +88,13 @@
     <!-- ── BOTTOM PANELS ─────────────────────────────────────── -->
     <div id="panels">
 
-      <!-- Todo panel -->
       <div class="panel" id="todo-panel">
         <h3 class="panel-title">Tasks</h3>
         <form id="todo-form">
           <input id="todo-input" type="text" placeholder="Add a task…" autocomplete="off" />
           <button type="submit">+</button>
         </form>
+        <span id="todo-input-error" class="todo-input-error hidden"></span>
         <ul id="todo-list"></ul>
       </div>
 

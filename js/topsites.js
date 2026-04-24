@@ -1,5 +1,5 @@
 /**
- * topsites.js — render top sites from chrome.topSites API.
+ * topsites.js — render recently visited sites from chrome.history API.
  */
 
 const TopSites = (() => {
@@ -20,7 +20,7 @@ const TopSites = (() => {
 
   function render(sites) {
     grid.innerHTML = "";
-    sites.slice(0, 10).forEach((site) => {
+    sites.forEach((site) => {
       const a = document.createElement("a");
       a.className = "topsite-item";
       a.href = site.url;
@@ -64,17 +64,50 @@ const TopSites = (() => {
       return;
     }
     if (section) section.classList.remove("hidden");
-    const blocked = await Config.blockedHosts();
-    const filter = (sites) => sites.filter((s) => {
-      try { return !blocked.includes(new URL(s.url).hostname.replace(/^www\./, "")); }
-      catch { return true; }
-    });
-    if (typeof chrome !== "undefined" && chrome.topSites) {
-      chrome.topSites.get((sites) => render(filter(sites || [])));
+
+    const configBlocked  = await Config.blockedHosts();
+    const localData      = await Storage.getLocal(["blockedSites"]);
+    const localBlocked   = Array.isArray(localData.blockedSites) ? localData.blockedSites : [];
+    const blocked        = [...new Set([...configBlocked, ...localBlocked])];
+
+    function dedupAndFilter(items) {
+      const seen = new Set();
+      const result = [];
+      for (const item of items) {
+        if (!item.url) continue;
+        let hostname;
+        try { hostname = new URL(item.url).hostname.replace(/^www\./, ""); }
+        catch { continue; }
+        if (/^chrome(-extension)?:/.test(item.url)) continue;
+        if (blocked.includes(hostname)) continue;
+        if (seen.has(hostname)) continue;
+        seen.add(hostname);
+        result.push(item);
+        if (result.length >= 7) break;
+      }
+      return result;
+    }
+
+    if (typeof chrome !== "undefined" && chrome.history) {
+      try {
+        const items = await chrome.history.search({ text: "", maxResults: 100, startTime: 0 });
+        render(dedupAndFilter(items || []));
+      } catch (e) {
+        console.warn("[ZenTab] chrome.history failed, falling back to topSites", e);
+        if (typeof chrome !== "undefined" && chrome.topSites) {
+          chrome.topSites.get((sites) => {
+            render(dedupAndFilter(sites || []));
+          });
+        }
+      }
+    } else if (typeof chrome !== "undefined" && chrome.topSites) {
+      chrome.topSites.get((sites) => {
+        render(dedupAndFilter(sites || []));
+      });
     } else {
-      render(filter([
-        { url: "https://github.com", title: "GitHub" },
-        { url: "https://google.com", title: "Google" },
+      render(dedupAndFilter([
+        { url: "https://github.com",  title: "GitHub" },
+        { url: "https://google.com",  title: "Google" },
         { url: "https://youtube.com", title: "YouTube" },
       ]));
     }
