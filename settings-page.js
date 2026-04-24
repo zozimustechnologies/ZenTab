@@ -31,7 +31,6 @@
     showTopSites: true,
     clockFormat:  "12",
     showSeconds:  false,
-    useSync:      false,
   };
 
   /* ── Load saved settings ────────────────────────────────── */
@@ -57,7 +56,6 @@
   const showTopSitesChk = document.getElementById("sp-show-topsites");
   const clockFmt  = document.getElementById("sp-clock-format");
   const showSecs  = document.getElementById("sp-show-seconds");
-  const useSync   = document.getElementById("sp-use-sync");
   const firstName = document.getElementById("sp-first-name");
   const lastName  = document.getElementById("sp-last-name");
   const greetingStyle = document.getElementById("sp-greeting-style");
@@ -97,7 +95,6 @@
 
   clockFmt.value   = s.clockFormat;
   showSecs.checked = s.showSeconds;
-  useSync.checked  = s.useSync;
   firstName.value       = s.firstName;
   lastName.value        = s.lastName;
   greetingStyle.value   = s.greetingStyle ?? "semiformal";
@@ -139,7 +136,6 @@
       showTopSitesChk.checked !== (s.showTopSites !== false) ||
       clockFmt.value        !== s.clockFormat   ||
       showSecs.checked      !== s.showSeconds   ||
-      useSync.checked       !== s.useSync       ||
       firstName.value.trim()!== s.firstName     ||
       lastName.value.trim() !== s.lastName      ||
       greetingStyle.value   !== (s.greetingStyle ?? "semiformal")
@@ -376,6 +372,72 @@
   blockedSites = Array.isArray(bsData.blockedSites) ? bsData.blockedSites : [];
   renderBlockedSites();
 
+  /* ── Backup & Restore ───────────────────────────────────── */
+  const importStatus = document.getElementById("sp-import-status");
+
+  function showImportStatus(msg, isError = false) {
+    importStatus.textContent = msg;
+    importStatus.style.color = isError ? "#f87171" : "#4ade80";
+    importStatus.classList.remove("hidden");
+    setTimeout(() => importStatus.classList.add("hidden"), 4000);
+  }
+
+  document.getElementById("sp-export-btn").addEventListener("click", async () => {
+    const settingsData = await Storage.getLocal(Object.keys({
+      bgType: 1, bgUrl: 1, bgGradFrom: 1, bgGradTo: 1, bgSolid: 1,
+      firstName: 1, lastName: 1, greetingStyle: 1, showWeather: 1,
+      weatherCity: 1, showTopSites: 1, clockFormat: 1, showSeconds: 1,
+      shortcuts: 1, blockedSites: 1, tasks: 1, notes: 1, favTabs: 1,
+    }));
+    const blob = new Blob([JSON.stringify(settingsData, null, 2)], { type: "application/json" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = "zentab-settings.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("sp-import-input").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (typeof data !== "object" || Array.isArray(data)) throw new Error("Invalid format");
+      await Storage.setLocal(data);
+      // Re-apply settings fields to form
+      const keys = Object.keys(DEFAULTS);
+      const fresh = await Storage.getLocal(keys);
+      keys.forEach((k) => { if (k in fresh && fresh[k] !== null) s[k] = fresh[k] ?? DEFAULTS[k]; });
+      bgType.value      = s.bgType;       bgUrl.value  = s.bgUrl;
+      gradFrom.value    = s.bgGradFrom;   gradFromHex.value = s.bgGradFrom;
+      gradTo.value      = s.bgGradTo;     gradToHex.value   = s.bgGradTo;
+      solidColor.value  = s.bgSolid;      solidHex.value    = s.bgSolid;
+      syncBgVisibility();
+      showWx.checked    = s.showWeather;
+      cityGroup.classList.toggle("hidden", !s.showWeather);
+      cityInput.value   = s.weatherCity;
+      showTopSitesChk.checked = s.showTopSites !== false;
+      firstName.value   = s.firstName;    lastName.value = s.lastName;
+      greetingStyle.value = s.greetingStyle ?? "semiformal";
+      clockFmt.value    = s.clockFormat;  showSecs.checked = s.showSeconds;
+      updateClockOptions();
+      checkDirty();
+      // Reload shortcuts & blocked sites lists
+      const scFresh = await Storage.getLocal(["shortcuts"]);
+      shortcuts = (scFresh.shortcuts && typeof scFresh.shortcuts === "object") ? scFresh.shortcuts : {};
+      renderShortcuts();
+      const bsFresh = await Storage.getLocal(["blockedSites"]);
+      blockedSites = Array.isArray(bsFresh.blockedSites) ? bsFresh.blockedSites : [];
+      renderBlockedSites();
+      showImportStatus("✓ Settings imported successfully.");
+    } catch {
+      showImportStatus("Import failed — invalid file.", true);
+    }
+    e.target.value = ""; // allow re-importing same file
+  });
+
   /* ── Discard changes ────────────────────────────────────── */
   document.getElementById("sp-discard-btn").addEventListener("click", () => {
     if (!isFormDirty()) return;
@@ -397,7 +459,6 @@
     greetingStyle.value   = s.greetingStyle ?? "semiformal";
     clockFmt.value        = s.clockFormat;
     showSecs.checked      = s.showSeconds;
-    useSync.checked       = s.useSync;
     updateClockOptions();
     hideToast();
   });
@@ -451,16 +512,12 @@
       showTopSites: showTopSitesChk.checked,
       clockFormat:  clockFmt.value,
       showSeconds:  showSecs.checked,
-      useSync:      useSync.checked,
     };
 
     await Storage.set(toSave);
 
     // Sync saved baseline so dirty-check works correctly after save
     Object.assign(s, toSave);
-
-    // Keep localStorage useSync flag in sync so storage.js can read it
-    localStorage.setItem("useSync", useSync.checked ? "true" : "false");
 
     hideToast();
     checkDirty();

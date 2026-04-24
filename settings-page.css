@@ -116,6 +116,34 @@ html, body {
 }
 .sp-external-btn:hover { opacity: 0.85; }
 
+/* ── Backup & Restore ─────────────────────────────────────── */
+.sp-backup-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.sp-backup-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 9px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+.sp-backup-btn:hover { background: var(--surface-hover); border-color: var(--accent2); }
+.sp-import-status {
+  display: block;
+  font-size: 0.82rem;
+  margin-top: 8px;
+}
+
+
 /* ── Engine cards ─────────────────────────────────────────── */
 .engine-options {
   display: flex;

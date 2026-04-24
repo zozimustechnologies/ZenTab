@@ -152,13 +152,16 @@
         ><span style="color:#22c55e">➕</span> Get Site Blocker</a>
       </section>
 
-      <!-- ── Sync ──────────────────────────────────────────── -->
+      <!-- ── Backup & Restore ───────────────────────────────── -->
       <section class="sp-section">
-        <h2 class="sp-section-title">Sync</h2>
-        <label class="sp-toggle">
-          <input type="checkbox" id="sp-use-sync" />
-          <span>Sync settings across devices via Chrome Sync</span>
-        </label>
+        <h2 class="sp-section-title">Backup &amp; Restore</h2>
+        <p class="sp-hint">Export your settings to a file and import them on another device.</p>
+        <div class="sp-backup-row mt">
+          <button type="button" id="sp-export-btn" class="sp-backup-btn">⬇ Export settings</button>
+          <label class="sp-backup-btn sp-import-label" for="sp-import-input">⬆ Import settings</label>
+          <input type="file" id="sp-import-input" accept=".json" class="hidden" />
+        </div>
+        <span id="sp-import-status" class="sp-import-status hidden"></span>
       </section>
 
       <!-- ── Actions ───────────────────────────────────────── -->
