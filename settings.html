@@ -57,7 +57,7 @@
             </div>
           </div>
         </div>
-        <input id="sp-bg-url" type="text" placeholder="https://example.com/image.jpg" class="hidden mt" />
+        <input type="text" id="sp-bg-url" placeholder="https://example.com/image.jpg" class="hidden mt" />
       </section>
 
       <!-- ── Weather ───────────────────────────────────────── -->
@@ -68,7 +68,7 @@
           <span>Show current weather in the top bar</span>
         </label>
         <div id="sp-city-group" class="hidden mt">
-          <input id="sp-weather-city" type="text" placeholder="Enter your city, e.g. London" />
+          <input id="sp-weather-city" type="text" placeholder="Enter your city, e.g. New York" />
         </div>
       </section>
 
@@ -84,7 +84,7 @@
           <p class="sp-hint">These hostnames will not appear in your recent sites.</p>
           <div id="sp-blocked-sites-list" class="sp-shortcuts-list mt"></div>
           <div class="sp-shortcuts-form mt">
-            <input type="text" id="sp-blocked-site-input" class="sp-shortcut-field" placeholder="e.g. reddit.com" autocomplete="off" />
+            <input type="text" id="sp-blocked-site-input" class="sp-shortcut-field" placeholder="e.g. example.com" autocomplete="off" />
             <button type="button" id="sp-blocked-site-add-btn" class="sp-shortcut-add-btn">Hide</button>
           </div>
           <span id="sp-blocked-site-error" class="sp-shortcut-error hidden"></span>
@@ -96,7 +96,7 @@
         <h2 class="sp-section-title">Display Name</h2>
         <div class="sp-row mt">
           <label for="sp-first-name">First name</label>
-          <input type="text" id="sp-first-name" class="sp-inline-input" placeholder="e.g. Jane" autocomplete="given-name" maxlength="40" />
+          <input type="text" id="sp-first-name" class="sp-inline-input" placeholder="e.g. John" autocomplete="given-name" maxlength="40" />
         </div>
         <div class="sp-row mt">
           <label for="sp-last-name">Last name</label>
@@ -133,8 +133,8 @@
         <p class="sp-hint">Type <code>/flag</code> in the search bar to jump straight to a URL. Add <code>{q}</code> in the URL to pass a search query.</p>
         <div id="sp-shortcuts-list" class="sp-shortcuts-list mt"></div>
         <div id="sp-shortcuts-form" class="sp-shortcuts-form mt">
-          <input type="text" id="sp-shortcut-flag"  class="sp-shortcut-field" placeholder="flag, e.g. gh" autocomplete="off" maxlength="32" />
-          <input type="text" id="sp-shortcut-url"   class="sp-shortcut-field" placeholder="URL, e.g. https://github.com" autocomplete="off" />
+          <input type="text" id="sp-shortcut-flag"  class="sp-shortcut-field" placeholder="flag, e.g. ex" autocomplete="off" maxlength="32" />
+          <input type="text" id="sp-shortcut-url"   class="sp-shortcut-field" placeholder="URL, e.g. https://example.com" autocomplete="off" />
           <button type="button" id="sp-shortcut-add-btn" class="sp-shortcut-add-btn">Add</button>
         </div>
         <span id="sp-shortcut-error" class="sp-shortcut-error hidden"></span>

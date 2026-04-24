@@ -135,7 +135,7 @@ const FavTabs = (() => {
       if (!/^https?:\/\//i.test(url)) url = "https://" + url;
 
       try { new URL(url); } catch {
-        showUrlError("Please enter a valid URL, e.g. github.com");
+        showUrlError("Please enter a valid URL, e.g. example.com");
         return;
       }
       clearUrlError();

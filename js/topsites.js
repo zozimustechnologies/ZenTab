@@ -106,9 +106,7 @@ const TopSites = (() => {
       });
     } else {
       render(dedupAndFilter([
-        { url: "https://github.com",  title: "GitHub" },
-        { url: "https://google.com",  title: "Google" },
-        { url: "https://youtube.com", title: "YouTube" },
+        { url: "https://example.com", title: "Example" },
       ]));
     }
   }

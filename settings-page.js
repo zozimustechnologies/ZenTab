@@ -266,7 +266,7 @@
 
     if (!flag) {
       shortcutFlag.classList.add("input-error");
-      showShortcutError("Please enter a flag, e.g. gh");
+      showShortcutError("Please enter a flag, e.g. ex");
       shortcutFlag.focus();
       return;
     }
@@ -350,7 +350,7 @@
     let host = blockedInput.value.trim().toLowerCase().replace(/^https?:\/\//i, "").replace(/\/.*$/, "").replace(/^www\./, "");
     if (!host) {
       blockedInput.classList.add("input-error");
-      blockedError.textContent = "Please enter a hostname, e.g. reddit.com";
+      blockedError.textContent = "Please enter a hostname, e.g. example.com";
       blockedError.classList.remove("hidden");
       blockedInput.focus();
       return;
