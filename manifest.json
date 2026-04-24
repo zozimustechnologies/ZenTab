@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SmartNewTab",
+  "name": "Zen Tab",
   "version": "1.0.0",
   "description": "A fast, distraction-free new tab page with clock, search, bookmarks, todos, weather, notes, and focus mode.",
 
@@ -39,6 +39,6 @@
       "48":  "icons/icon-48.png",
       "128": "icons/icon-128.png"
     },
-    "default_title": "SmartNewTab"
+    "default_title": "Zen Tab"
   }
 }

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   SmartNewTab — newtab.css
+   Zen Tab — newtab.css
    ═══════════════════════════════════════════════════════════ */
 
 /* ── Reset & base ─────────────────────────────────────────── */
@@ -27,6 +27,8 @@ html, body {
   color: var(--text);
   overflow: hidden;
   user-select: none;
+  background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
+  background-color: #0f0c29;
 }
 
 /* ── Background layer ─────────────────────────────────────── */

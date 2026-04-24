@@ -8,8 +8,8 @@
 
   /* ── Onboarding mode tweaks ─────────────────────────────── */
   if (isOnboarding) {
-    document.title = "Welcome — SmartNewTab";
-    document.getElementById("sp-title").textContent = "Welcome to SmartNewTab ⚡";
+    document.title = "Welcome — Zen Tab";
+    document.getElementById("sp-title").textContent = "Welcome to Zen Tab ⚡";
     document.getElementById("sp-subtitle").textContent =
       "Set up your new tab in 30 seconds.";
     document.getElementById("sp-save-btn").textContent = "Get Started →";

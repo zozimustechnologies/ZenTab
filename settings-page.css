@@ -23,6 +23,11 @@ html, body {
   background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);
   background-attachment: fixed;
   color: var(--text);
+  overscroll-behavior: none;
+}
+
+html {
+  background-color: #0f0c29;
 }
 
 /* ── Page container ───────────────────────────────────────── */
@@ -41,9 +46,9 @@ html, body {
 }
 
 #sp-logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
   flex-shrink: 0;
 }
 
