@@ -55,30 +55,65 @@
   showSecs.checked = s.showSeconds;
   useSync.checked  = s.useSync;
 
+  /* ── Live clock format preview ─────────────────────────── */
+  const opt12 = document.getElementById("sp-clock-opt-12");
+  const opt24 = document.getElementById("sp-clock-opt-24");
+
+  function formatPreview(use24, secs) {
+    const now = new Date();
+    const opts = { hour: "numeric", minute: "2-digit", hour12: !use24 };
+    if (secs) opts.second = "2-digit";
+    return now.toLocaleTimeString([], opts);
+  }
+
+  function updateClockOptions() {
+    const secs = showSecs.checked;
+    opt12.textContent = `12-hour (${formatPreview(false, secs)})`;
+    opt24.textContent = `24-hour (${formatPreview(true,  secs)})`;
+  }
+
+  updateClockOptions();
+  setInterval(updateClockOptions, 1000);
+  showSecs.addEventListener("change", updateClockOptions);
+
   /* ── Toast (unsaved changes) ────────────────────────────── */
   const toast     = document.getElementById("sp-toast");
   const toastSave = document.getElementById("sp-toast-save");
-  let   _dirty    = false;
 
-  function showToast() {
-    if (_dirty || isOnboarding) return;
-    _dirty = true;
-    toast.classList.remove("hidden");
-    // Force reflow so transition plays
-    toast.offsetHeight; // eslint-disable-line no-unused-expressions
-    toast.classList.add("show");
+  function isFormDirty() {
+    return (
+      bgType.value          !== s.bgType        ||
+      bgUrl.value.trim()    !== s.bgUrl         ||
+      showWx.checked        !== s.showWeather   ||
+      cityInput.value.trim()!== s.weatherCity   ||
+      clockFmt.value        !== s.clockFormat   ||
+      showSecs.checked      !== s.showSeconds   ||
+      useSync.checked       !== s.useSync
+    );
+  }
+
+  function checkDirty() {
+    if (isOnboarding) return;
+    if (isFormDirty()) {
+      if (!toast.classList.contains("show")) {
+        toast.classList.remove("hidden");
+        toast.offsetHeight; // eslint-disable-line no-unused-expressions
+        toast.classList.add("show");
+      }
+    } else {
+      hideToast();
+    }
   }
 
   function hideToast() {
-    _dirty = false;
     toast.classList.remove("show");
     // Keep hidden after transition ends
     toast.addEventListener("transitionend", () => toast.classList.add("hidden"), { once: true });
   }
 
-  // Trigger toast on any form input change
-  document.getElementById("sp-form").addEventListener("change", showToast);
-  document.getElementById("sp-form").addEventListener("input",  showToast);
+  // Trigger check on any form input change
+  document.getElementById("sp-form").addEventListener("change", checkDirty);
+  document.getElementById("sp-form").addEventListener("input",  checkDirty);
 
   // Toast "Save" button submits the form
   toastSave.addEventListener("click", () => {
@@ -93,6 +128,25 @@
   showWx.addEventListener("change", () => {
     cityGroup.classList.toggle("hidden", !showWx.checked);
   });
+
+  /* ── Site Blocker detection ─────────────────────────────── */
+  const SITE_BLOCKER_ID = "lkcklabdlogcdcmbddiffonafahgagmm";
+  const sbBtn = document.getElementById("sp-siteblocker-btn");
+
+  if (typeof chrome !== "undefined" && chrome.management && sbBtn) {
+    chrome.management.get(SITE_BLOCKER_ID, (extInfo) => {
+      if (chrome.runtime.lastError || !extInfo || !extInfo.enabled) return;
+      // Site Blocker is installed and enabled — update the button
+      sbBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.1em;vertical-align:middle;margin-right:4px">open_in_browser</span>Open Site Blocker';
+      sbBtn.removeAttribute("href");
+      sbBtn.removeAttribute("target");
+      sbBtn.removeAttribute("rel");
+      sbBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ url: `chrome-extension://${SITE_BLOCKER_ID}/sidepanel.html` });
+      });
+    });
+  }
 
   /* ── Back / open new tab link ───────────────────────────── */
   document.getElementById("sp-back-link").addEventListener("click", (e) => {

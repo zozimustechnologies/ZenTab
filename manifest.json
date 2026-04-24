@@ -16,7 +16,8 @@
     "storage",
     "topSites",
     "alarms",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "management"
   ],
 
   "host_permissions": [

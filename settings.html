@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartNewTab Settings</title>
   <link rel="stylesheet" href="settings-page.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 <body>
 
@@ -49,8 +50,8 @@
         <div class="sp-row">
           <label for="sp-clock-format">Format</label>
           <select id="sp-clock-format" class="sp-select-inline">
-            <option value="12">12-hour (1:30 PM)</option>
-            <option value="24">24-hour (13:30)</option>
+            <option value="12" id="sp-clock-opt-12">12-hour</option>
+            <option value="24" id="sp-clock-opt-24">24-hour</option>
           </select>
         </div>
         <label class="sp-toggle mt">
@@ -69,7 +70,7 @@
           target="_blank"
           rel="noopener noreferrer"
           class="sp-external-btn mt"
-        >🚫 Get Site Blocker</a>
+        ><span style="color:#22c55e">➕</span> Get Site Blocker</a>
       </section>
 
       <!-- ── Sync ──────────────────────────────────────────── -->
