@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css" />
+</head>
+<body>
+
+  <!-- Background layer (image / gradient) -->
+  <div id="bg-layer"></div>
+
+  <!-- ── TOP BAR ────────────────────────────────────────────── -->
+  <header id="top-bar">
+    <div id="weather-widget" class="hidden">
+      <span id="weather-icon">☀️</span>
+      <span id="weather-temp">--°</span>
+      <span id="weather-desc">--</span>
+    </div>
+    <div id="top-bar-right">
+      <button id="focus-toggle-btn" title="Toggle Focus Mode">🎯</button>
+      <button id="settings-btn" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- ── FOCUS MODE BANNER ──────────────────────────────────── -->
+  <div id="focus-banner" class="hidden">
+    <span id="focus-label">🎯 Focus Mode — </span>
+    <span id="focus-timer">00:00</span>
+    <button id="focus-end-btn">End</button>
+  </div>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────────── -->
+  <main id="main">
+
+    <!-- Clock -->
+    <section id="clock-section">
+      <div id="clock">00:00</div>
+      <div id="date">Monday, January 1</div>
+      <div id="greeting">Good morning</div>
+    </section>
+
+    <!-- Search bar -->
+    <section id="search-section">
+      <form id="search-form">
+        <div id="search-wrapper">
+          <span id="search-engine-icon" title="Change engine">🔍</span>
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search or enter a URL…"
+            autocomplete="off"
+            autofocus
+          />
+          <button type="submit" id="search-submit" aria-label="Search">→</button>
+        </div>
+      </form>
+      <!-- Engine picker (shown on icon click) -->
+      <div id="engine-picker" class="hidden">
+        <button data-engine="bing">Bing ⭐</button>
+        <button data-engine="google">Google</button>
+      </div>
+    </section>
+
+    <!-- Top Sites -->
+    <section id="topsites-section">
+      <div id="topsites-grid"></div>
+    </section>
+
+    <!-- ── BOTTOM PANELS ─────────────────────────────────────── -->
+    <div id="panels">
+
+      <!-- Todo panel -->
+      <div class="panel" id="todo-panel">
+        <h3 class="panel-title">Tasks</h3>
+        <form id="todo-form">
+          <input id="todo-input" type="text" placeholder="Add a task…" autocomplete="off" />
+          <button type="submit">+</button>
+        </form>
+        <ul id="todo-list"></ul>
+      </div>
+
+      <!-- Notes panel -->
+      <div class="panel" id="notes-panel">
+        <h3 class="panel-title">Notes</h3>
+        <textarea id="notes-area" placeholder="Jot something down…" spellcheck="false"></textarea>
+      </div>
+
+    </div>
+  </main>
+
+
+
+  <!-- Scripts (module order matters) -->
+  <script src="js/storage.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/topsites.js"></script>
+  <script src="js/todo.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

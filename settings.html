@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartNewTab Settings</title>
+  <link rel="stylesheet" href="settings-page.css" />
+</head>
+<body>
+
+  <div id="page">
+
+    <header id="sp-header">
+      <img id="sp-logo" src="icons/icon-48.png" alt="SmartNewTab" />
+      <div>
+        <h1 id="sp-title">Settings</h1>
+        <p id="sp-subtitle">Customize your new tab experience.</p>
+      </div>
+    </header>
+
+    <form id="sp-form" novalidate>
+
+      <!-- ── Background ────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Background</h2>
+        <select id="sp-bg-type">
+          <option value="gradient">Gradient (Default)</option>
+          <option value="unsplash">Random Nature Photo</option>
+          <option value="custom">Custom Image URL</option>
+        </select>
+        <input id="sp-bg-url" type="text" placeholder="https://example.com/image.jpg" class="hidden mt" />
+      </section>
+
+      <!-- ── Weather ───────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Weather</h2>
+        <label class="sp-toggle">
+          <input type="checkbox" id="sp-show-weather" />
+          <span>Show current weather in the top bar</span>
+        </label>
+        <div id="sp-city-group" class="hidden mt">
+          <input id="sp-weather-city" type="text" placeholder="Enter your city, e.g. London" />
+        </div>
+      </section>
+
+      <!-- ── Clock ─────────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Clock</h2>
+        <div class="sp-row">
+          <label for="sp-clock-format">Format</label>
+          <select id="sp-clock-format" class="sp-select-inline">
+            <option value="12">12-hour (1:30 PM)</option>
+            <option value="24">24-hour (13:30)</option>
+          </select>
+        </div>
+        <label class="sp-toggle mt">
+          <input type="checkbox" id="sp-show-seconds" />
+          <span>Show seconds</span>
+        </label>
+      </section>
+
+      <!-- ── Focus Mode ────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Block Sites</h2>
+        <p class="sp-hint">Use a dedicated extension to block distracting websites.</p>
+        <a
+          id="sp-siteblocker-btn"
+          href="https://zozimustechnologies.github.io/siteblocker-addon"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sp-external-btn mt"
+        >🚫 Get Site Blocker</a>
+      </section>
+
+      <!-- ── Sync ──────────────────────────────────────────── -->
+      <section class="sp-section">
+        <h2 class="sp-section-title">Sync</h2>
+        <label class="sp-toggle">
+          <input type="checkbox" id="sp-use-sync" />
+          <span>Sync settings across devices via Chrome Sync</span>
+        </label>
+      </section>
+
+      <!-- ── Actions ───────────────────────────────────────── -->
+      <div class="sp-actions">
+        <button type="submit" id="sp-save-btn">Save Changes</button>
+        <a id="sp-back-link" href="#" class="sp-back">← Open New Tab</a>
+      </div>
+
+    </form>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="settings-page.js"></script>
+
+  <!-- Toast notification -->
+  <div id="sp-toast" class="sp-toast hidden">
+    <span>You have unsaved changes</span>
+    <button id="sp-toast-save" type="button">Save</button>
+  </div>
+
+</body>
+</html>

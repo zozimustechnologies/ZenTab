@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0c29"/>
+      <stop offset="50%" stop-color="#1a1a4e"/>
+      <stop offset="100%" stop-color="#24243e"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7971e"/>
+      <stop offset="100%" stop-color="#ffd200"/>
+    </linearGradient>
+    <linearGradient id="tab" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+
+  <!-- Browser chrome bar -->
+  <rect x="72" y="148" width="368" height="232" rx="16" ry="16" fill="url(#tab)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+
+  <!-- Tab bump at top left -->
+  <path d="M72 180 L72 164 Q72 148 88 148 L196 148 Q208 148 212 160 L220 180 Z" fill="rgba(255,255,255,0.22)"/>
+
+  <!-- Three window dots -->
+  <circle cx="104" cy="196" r="7" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="128" cy="196" r="7" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="152" cy="196" r="7" fill="rgba(255,255,255,0.15)"/>
+
+  <!-- URL bar -->
+  <rect x="176" y="184" width="236" height="24" rx="12" ry="12" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+
+  <!-- Lightning bolt (the "smart" symbol) — centred in the content area -->
+  <polygon points="280,228 244,290 268,290 232,364 304,292 276,292 316,228" fill="url(#bolt)" opacity="0.95"/>
+
+  <!-- Subtle glow under bolt -->
+  <ellipse cx="268" cy="350" rx="40" ry="10" fill="#ffd200" opacity="0.18"/>
+</svg>
