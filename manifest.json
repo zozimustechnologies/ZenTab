@@ -40,5 +40,7 @@
       "128": "icons/icon-128.png"
     },
     "default_title": "Zen Tab"
-  }
+  },
+
+  "homepage_url": "https://zozimustechnologies.github.io/smartnewtab/"
 }

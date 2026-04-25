@@ -51,7 +51,7 @@ Define your own `/flag` shortcuts in Settings. Supports a `{q}` placeholder so s
 
 ### Privacy
 
-- **No account required.** Everything is stored locally in your browser using `chrome.storage.local`.
+- **No account required.** Everything is stored locally in your browser using the extension storage API.
 - **No data is collected or transmitted** except for weather (your city name is sent to the Open-Meteo and Nominatim APIs to fetch weather data — no personal identifiers are included).
 - **No analytics, no ads, no tracking.**
 

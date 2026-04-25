@@ -2,7 +2,7 @@
 
 **Website:** [https://zozimustechnologies.github.io/smartnewtab/](https://zozimustechnologies.github.io/smartnewtab/)
 
-A fast, distraction-free new tab page for Microsoft Edge and Google Chrome.  
+A fast, distraction-free new tab page for Microsoft Edge and other modern browsers.  
 No account required. Everything is stored locally in your browser.
 
 ---

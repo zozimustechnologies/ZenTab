@@ -90,7 +90,7 @@ const TopSites = (() => {
 
     if (typeof chrome !== "undefined" && chrome.history) {
       try {
-        const items = await chrome.history.search({ text: "", maxResults: 100, startTime: 0 });
+        const items = await chrome.history.search({ text: "", maxResults: 10, startTime: 0 });
         render(dedupAndFilter(items || []));
       } catch (e) {
         console.warn("[ZenTab] chrome.history failed, falling back to topSites", e);

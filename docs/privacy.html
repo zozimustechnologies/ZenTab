@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Zen Tab</title>
+  <meta name="description" content="Privacy policy for the Zen Tab browser extension.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #3d7ea6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 32px; display: flex; align-items: center; gap: 14px; }
+    header img { width: 36px; height: 36px; border-radius: 8px; }
+    header a { font-weight: 600; font-size: 1.1rem; color: var(--text); }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    h1 { font-size: 2rem; margin-bottom: 8px; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 40px; }
+    h2 { font-size: 1.15rem; margin: 36px 0 10px; color: #e6edf3; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    p { margin-bottom: 14px; color: var(--text); }
+    ul { margin: 10px 0 14px 20px; }
+    li { margin-bottom: 6px; }
+    footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="storeassets/extensionlogo.png" alt="Zen Tab logo">
+    <a href="index.html">Zen Tab</a>
+  </header>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: April 2026 &nbsp;·&nbsp; Applies to Zen Tab browser extension</p>
+
+    <h2>Overview</h2>
+    <p>Zen Tab is designed with privacy as a default. The extension stores all user data locally on your device. No personal information is collected, transmitted to our servers, or shared with third parties, except as described below.</p>
+
+    <h2>Data Stored Locally</h2>
+    <p>The following data is saved only in your browser's local extension storage and never leaves your device:</p>
+    <ul>
+      <li>Clock and display preferences (theme, clock format)</li>
+      <li>Favourite bookmarks (URL and title pairs you add manually)</li>
+      <li>To-do list items</li>
+      <li>Notes content</li>
+      <li>Focus mode and site-blocker settings</li>
+      <li>Search engine preference</li>
+      <li>Weather location preference (city name you enter)</li>
+    </ul>
+
+    <h2>Network Requests</h2>
+    <p>Zen Tab makes the following outbound network requests:</p>
+    <ul>
+      <li><strong>Weather data</strong> — when you enable the weather widget, the city name you enter is sent to <a href="https://nominatim.openstreetmap.org" target="_blank" rel="noopener">Nominatim (OpenStreetMap)</a> to resolve geographic coordinates, and those coordinates are then sent to <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> to fetch the current weather forecast. No personally identifiable information is included. Both services are subject to their own privacy policies.</li>
+    </ul>
+    <p>No other data is sent anywhere. There are no analytics, no telemetry, no advertising networks, and no tracking pixels embedded in the extension.</p>
+
+    <h2>Browser History Permission</h2>
+    <p>The <code>history</code> permission is used solely to display your recently visited sites in the new-tab dashboard. History data is read locally and is never transmitted externally.</p>
+
+    <h2>Management Permission</h2>
+    <p>The <code>management</code> permission is used to detect whether the companion <em>Site Blocker</em> extension is installed, so a configuration shortcut can be shown in the settings page. No information about installed extensions is transmitted externally.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>Zen Tab does not knowingly collect any information from children under 13 years of age.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>If this policy changes, the updated version will be published at this URL with a revised date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions? Open an issue on <a href="https://github.com/zozimustechnologies/smartnewtab" target="_blank" rel="noopener">GitHub</a>.</p>
+  </main>
+
+  <footer>
+    &copy; 2026 Zozimus Technologies &nbsp;·&nbsp; <a href="index.html">Back to home</a>
+  </footer>
+</body>
+</html>
