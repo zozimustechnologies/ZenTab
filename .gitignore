@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Puppeteer cache
+.local-chromium/
+
+# Store asset PNGs (generated — run `node storeassets/generate-assets.js` to recreate)
+
+# npm
+package-lock.json
+npm-debug.log*
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+screenshot-settings-bottom.png
+generate-assets.js
+policy-check.js
